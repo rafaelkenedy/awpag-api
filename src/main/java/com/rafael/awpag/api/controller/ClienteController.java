@@ -1,13 +1,15 @@
 package com.rafael.awpag.api.controller;
 
+import com.rafael.awpag.domain.exception.EmailEmUsoException;
 import com.rafael.awpag.domain.model.Cliente;
 import com.rafael.awpag.domain.repository.ClienteRepository;
+import com.rafael.awpag.domain.service.CadastroClienteService;
 import jakarta.validation.Valid;
-import lombok.AllArgsConstructor;
-import org.apache.coyote.Response;
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -21,11 +23,12 @@ import java.util.List;
 import java.util.Optional;
 
 @RestController
-@AllArgsConstructor
+@RequiredArgsConstructor
 @RequestMapping("/clientes")
 public class ClienteController {
 
     private final ClienteRepository repository;
+    private final CadastroClienteService service;
 
     @GetMapping
     public List<Cliente> getClientes() {
@@ -46,7 +49,7 @@ public class ClienteController {
     @ResponseStatus(HttpStatus.CREATED)
     @PostMapping
     public Cliente addCliente(@Valid @RequestBody Cliente cliente) {
-        return repository.save(cliente);
+        return service.salvar(cliente);
     }
 
     @PutMapping("/{clienteId}")
@@ -56,7 +59,7 @@ public class ClienteController {
         }
 
         cliente.setId(clienteId);
-        cliente = repository.save(cliente);
+        cliente = service.salvar(cliente);
 
         return ResponseEntity.ok(cliente);
     }
@@ -70,5 +73,10 @@ public class ClienteController {
         repository.deleteById(clienteId);
 
         return ResponseEntity.noContent().build();
+    }
+
+    @ExceptionHandler(EmailEmUsoException.class)
+    public ResponseEntity<String> capturar(EmailEmUsoException e){
+        return ResponseEntity.badRequest().body("{\"mensagem\": \"" + e.getMessage() + "\"}");
     }
 }
