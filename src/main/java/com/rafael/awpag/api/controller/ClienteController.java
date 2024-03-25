@@ -2,6 +2,7 @@ package com.rafael.awpag.api.controller;
 
 import com.rafael.awpag.domain.model.Cliente;
 import com.rafael.awpag.domain.repository.ClienteRepository;
+import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import org.apache.coyote.Response;
 import org.springframework.http.HttpStatus;
@@ -44,12 +45,12 @@ public class ClienteController {
 
     @ResponseStatus(HttpStatus.CREATED)
     @PostMapping
-    public Cliente addCliente(@RequestBody Cliente cliente) {
+    public Cliente addCliente(@Valid @RequestBody Cliente cliente) {
         return repository.save(cliente);
     }
 
     @PutMapping("/{clienteId}")
-    public ResponseEntity<Cliente> updateCliente(@PathVariable Long clienteId, @RequestBody Cliente cliente) {
+    public ResponseEntity<Cliente> updateCliente(@PathVariable Long clienteId, @Valid @RequestBody Cliente cliente) {
         if (!repository.existsById(clienteId)) {
             return ResponseEntity.notFound().build();
         }
