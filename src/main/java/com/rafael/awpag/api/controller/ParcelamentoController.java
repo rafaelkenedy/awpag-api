@@ -7,6 +7,7 @@ import com.rafael.awpag.domain.model.Parcelamento;
 import com.rafael.awpag.domain.repository.ParcelamentoRepository;
 import com.rafael.awpag.domain.service.ParcelamentoService;
 import jakarta.persistence.EntityNotFoundException;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -48,7 +49,7 @@ public class ParcelamentoController {
 
     @ResponseStatus(HttpStatus.CREATED)
     @PostMapping
-    public Parcelamento cadastrar(@RequestBody Parcelamento parcelamento) {
+    public Parcelamento cadastrar(@Valid @RequestBody Parcelamento parcelamento) {
         return service.cadastrar(parcelamento);
     }
 
