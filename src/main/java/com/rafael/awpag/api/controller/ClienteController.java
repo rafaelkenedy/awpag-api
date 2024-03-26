@@ -74,9 +74,4 @@ public class ClienteController {
 
         return ResponseEntity.noContent().build();
     }
-
-    @ExceptionHandler(EmailEmUsoException.class)
-    public ResponseEntity<String> capturar(EmailEmUsoException e){
-        return ResponseEntity.badRequest().body("{\"mensagem\": \"" + e.getMessage() + "\"}");
-    }
 }

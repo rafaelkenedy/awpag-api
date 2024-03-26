@@ -52,11 +52,4 @@ public class ParcelamentoController {
     public Parcelamento cadastrar(@Valid @RequestBody Parcelamento parcelamento) {
         return service.cadastrar(parcelamento);
     }
-
-    @ExceptionHandler({EntityNotFoundException.class, IllegalArgumentException.class})
-    public ResponseEntity<String> handleBadRequest(RuntimeException e) {
-        return ResponseEntity
-                .status(HttpStatus.BAD_REQUEST)
-                .body("{\"mensagem\": \"" + e.getMessage() + "\"}");
-    }
 }
