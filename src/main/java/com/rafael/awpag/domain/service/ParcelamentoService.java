@@ -2,14 +2,12 @@ package com.rafael.awpag.domain.service;
 
 import com.rafael.awpag.domain.model.Cliente;
 import com.rafael.awpag.domain.model.Parcelamento;
-import com.rafael.awpag.domain.repository.ClienteRepository;
 import com.rafael.awpag.domain.repository.ParcelamentoRepository;
-import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.time.LocalDateTime;
+import java.time.OffsetDateTime;
 
 @Service
 @RequiredArgsConstructor
@@ -28,7 +26,7 @@ public class ParcelamentoService {
         Cliente cliente = cadastroClienteService.buscar(parcelamento.getCliente().getId());
 
         parcelamento.setCliente(cliente);
-        parcelamento.setDataCriacao(LocalDateTime.now());
+        parcelamento.setDataCriacao(OffsetDateTime.now());
 
         return repository.save(parcelamento);
     }
